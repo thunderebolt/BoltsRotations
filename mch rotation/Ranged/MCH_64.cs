@@ -15,17 +15,17 @@ namespace mch_rotation.Ranged
 
         public override string RotationName => "Bolt's Machinist";
 
-        public override string Description => "MCH level 90 6.4. May not work well for levelling";
+        public override string Description => "Delayed Opener \nUses the first pot automatically (if enabled)  \nPot yourself for best deeps \n\nMade for a Level 90 MCH!";
 
         private bool InOpener { get; set; }
 
         protected override IAction CountDownAction(float remainTime)
         {
-
             if (remainTime < Service.Config.CountDownAhead)
             {
                 if (SplitShot.CanUse(out var act1, CanUseOption.MustUse)) return act1;
             }
+            if (remainTime < 2 && UseBurstMedicine(out var act)) return act;
             return base.CountDownAction(remainTime);
         }
 
