@@ -29,15 +29,16 @@ namespace mch_rotation.Ranged
             return base.CountDownAction(remainTime);
         }
 
-        protected override bool EmergencyGCD(out IAction act)
+        //GCD actions here.
+        protected override bool GeneralGCD(out IAction act)
         {
             //Overheated
             if (AutoCrossbow.CanUse(out act)) return true;
             if (HeatBlast.CanUse(out act)) return true;
 
 
-            if (BioBlaster.CanUse(out act)) return true; 
-            
+            if (BioBlaster.CanUse(out act)) return true;
+
             if (CombatElapsedLess(5))
             {
                 if (IsLastGCD(true, SplitShot) && !CombatElapsedLess(2) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
@@ -53,13 +54,6 @@ namespace mch_rotation.Ranged
 
             if (CleanShot.CanUse(out act)) return true;
             if (SlugShot.CanUse(out act)) return true;
-            if (SplitShot.CanUse(out act)) return true;
-            return false;
-        }
-
-        //GCD actions here.
-        protected override bool GeneralGCD(out IAction act)
-        {
             if (SplitShot.CanUse(out act)) return true;
             return false;
         }
