@@ -39,14 +39,17 @@ namespace mch_rotation.Ranged
 
             if (BioBlaster.CanUse(out act)) return true;
 
-            if (CombatElapsedLess(5))
+            if (CombatElapsedLess(12))
             {
                 if (IsLastGCD(true, SplitShot) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
+
+                if (IsLastGCD(true, CleanShot) && AirAnchor.CanUse(out act, CanUseOption.MustUse)) return true;
+
+                if (IsLastGCD(true, AirAnchor) && ChainSaw.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             if (!CombatElapsedLessGCD(1) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
             if (!CombatElapsedLessGCD(4) && AirAnchor.CanUse(out act, CanUseOption.MustUse)) return true;
             if (!CombatElapsedLessGCD(5) && ChainSaw.CanUse(out act, CanUseOption.MustUse)) return true;
-
 
             //Aoe
             if (ChainSaw.CanUse(out act)) return true;
@@ -108,7 +111,7 @@ namespace mch_rotation.Ranged
             {
                 if (Reassemble.CanUse(out act, CanUseOption.MustUse)) return true;
             }
-
+            
             if (nextGCD.IsTheSameTo(true, ChainSaw))
             {
                 if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
