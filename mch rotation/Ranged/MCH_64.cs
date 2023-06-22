@@ -41,7 +41,7 @@ namespace mch_rotation.Ranged
 
             if (CombatElapsedLess(5))
             {
-                if (IsLastGCD(true, SplitShot) && !CombatElapsedLess(2) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (IsLastGCD(true, SplitShot) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
             }
             if (!CombatElapsedLessGCD(1) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
             if (!CombatElapsedLessGCD(4) && AirAnchor.CanUse(out act, CanUseOption.MustUse)) return true;
