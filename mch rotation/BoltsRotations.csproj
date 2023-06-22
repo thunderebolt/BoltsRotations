@@ -4,7 +4,7 @@
 	  <TargetFramework>net7.0-windows</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <PlatformTarget>x64</PlatformTarget>
-	  <Author>Bolt</Author>
+	  <Authors>Bolt</Authors>
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	  <Platforms>AnyCPU</Platforms>
   </PropertyGroup>

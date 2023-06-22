@@ -1,7 +1,7 @@
 ﻿using RotationSolver.Basic.Data;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
-namespace mch_rotation.Ranged
+namespace BoltsRotations.Ranged
 {
     [LinkDescription("$Your link description here, it is better to link to a png! this attribute can be multiple! $")]
     [SourceCode("$If your rotation is open source, please write the link to this attribute! $")]
@@ -15,7 +15,7 @@ namespace mch_rotation.Ranged
 
         public override string RotationName => "Bolt's Machinist";
 
-        public override string Description => "Delayed Opener \nUses the first pot automatically (if enabled)  \nPot yourself for best deeps \n\nMade for a Level 90 MCH!";
+        public override string Description => "Delayed Opener \nUses the first pot automatically (if enabled)  \nPot yourself for best deeps \n\nWill dump everything when the boss is dying. Set the dying HP cutoff in settings.  \n\nMade for a Level 90 MCH!";
 
         private bool InOpener { get; set; }
 

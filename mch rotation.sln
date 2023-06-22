@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mch rotation", "mch rotation\mch rotation.csproj", "{3194A45A-910C-49AE-941D-97C3E1B64946}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoltsRotations", "mch rotation\BoltsRotations.csproj", "{3194A45A-910C-49AE-941D-97C3E1B64946}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
