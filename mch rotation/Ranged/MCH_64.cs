@@ -17,8 +17,6 @@ namespace BoltsRotations.Ranged
 
         public override string Description => "Delayed Opener \nUses the first pot automatically (if enabled)  \nPot yourself for best deeps \n\nWill dump everything when the boss is dying. Set the dying HP cutoff in settings.  \n\nMade for a Level 90 MCH!";
 
-        private bool InOpener { get; set; }
-
         protected override IAction CountDownAction(float remainTime)
         {
             if (remainTime < Service.Config.CountDownAhead)
@@ -30,7 +28,7 @@ namespace BoltsRotations.Ranged
         }
 
         //GCD actions here.
-        protected override bool GeneralGCD(out IAction act)
+        protected override bool EmergencyGCD(out IAction act)
         {
             //Overheated
             if (AutoCrossbow.CanUse(out act)) return true;
@@ -41,9 +39,9 @@ namespace BoltsRotations.Ranged
 
             if (CombatElapsedLess(12))
             {
-                if (IsLastGCD(true, SplitShot) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (!CombatElapsedLess(1) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
 
-                if (IsLastGCD(true, CleanShot) && AirAnchor.CanUse(out act, CanUseOption.MustUse)) return true;
+                if (Drill.ElapsedAfterGCD(2) && AirAnchor.CanUse(out act, CanUseOption.MustUse)) return true;
 
                 if (IsLastGCD(true, AirAnchor) && ChainSaw.CanUse(out act, CanUseOption.MustUse)) return true;
             }
@@ -63,8 +61,6 @@ namespace BoltsRotations.Ranged
 
         protected override bool EmergencyAbility(IAction nextGCD, out IAction act)
         {
-            if(Wildfire.IsCoolingDown)
-                InOpener = false;
             
             if (IsTargetDying)
             {
@@ -96,15 +92,15 @@ namespace BoltsRotations.Ranged
             }
 
             // Odd Batteries
-            if (Battery >= 80 && Wildfire.ElapsedAfter(50) && !CombatElapsedLess(150))
+            if (Battery >= 80 && !Wildfire.ElapsedAfter(80))
             {
                 if (RookAutoturret.CanUse(out act)) return true;
             }
 
             if (InBurst)
             {
-                if ((IsLastAbility(false, Hypercharge) || Heat >= 50) && !AirAnchor.WillHaveOneCharge(2) && !CombatElapsedLess(10)
-                    && Wildfire.CanUse(out act, CanUseOption.OnLastAbility)) return true;
+                if (Heat >= 50 && !AirAnchor.WillHaveOneCharge(2) && !CombatElapsedLess(10)
+                    && Wildfire.CanUse(out act, CanUseOption.MustUse)) return true;
             }
 
             if (nextGCD.IsTheSameTo(true, AirAnchor))
@@ -117,22 +113,29 @@ namespace BoltsRotations.Ranged
                 if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
             }
 
-            if (IsLastGCD(true, Drill))
+            if (IsLastGCD(true, Drill) && CombatElapsedLess(10))
             {
                 if (BarrelStabilizer.CanUse(out act)) return true;
             }
 
-            if (Wildfire.ElapsedAfter(6) && !IsOverheated)
+            if (Wildfire.ElapsedAfter(100))
             {
                 if (BarrelStabilizer.CanUse(out act)) return true;
             }
 
-            if ((Player.HasStatus(true, StatusID.Wildfire) || (Heat >= 50 && !Wildfire.ElapsedAfter(90))) && !ChainSaw.WillHaveOneCharge(8) && !AirAnchor.WillHaveOneCharge(8))
+            if ((Player.HasStatus(true, StatusID.Wildfire) || (Heat >= 50 && !Wildfire.ElapsedAfter(90) && Wildfire.IsInCooldown)) && !ChainSaw.WillHaveOneCharge(8) && !Drill.WillHaveOneCharge(2) && !AirAnchor.WillHaveOneCharge(8))
             {
                 if (Hypercharge.CanUse(out act)) return true;
             }
 
             return base.EmergencyAbility(nextGCD, out act);
+        }
+
+        protected override bool GeneralGCD(out IAction act)
+        {
+            if (SplitShot.CanUse(out act)) return true;
+
+            return false;
         }
 
         #region 0GCD actions
@@ -161,7 +164,7 @@ namespace BoltsRotations.Ranged
         //This is the method to update all field you wrote, it is used first during one frame.
         protected override void UpdateInfo()
         {
-            InOpener = true;
+            
         }
 
         //This method is used when player change the terriroty, such as go into one duty, you can use it to set the field.
