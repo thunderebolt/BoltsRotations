@@ -37,6 +37,7 @@ namespace BoltsRotations.Ranged
             if (HeatBlast.CanUse(out act)) return true;
 
             if (BioBlaster.CanUse(out act)) return true;
+            if (!AirAnchor.EnoughLevel && HotShot.CanUse(out act)) return true;
 
             if (CombatElapsedLess(12))
             {
@@ -49,6 +50,8 @@ namespace BoltsRotations.Ranged
             if (!CombatElapsedLessGCD(1) && Drill.CanUse(out act, CanUseOption.MustUse)) return true;
             if (!CombatElapsedLessGCD(4) && AirAnchor.CanUse(out act, CanUseOption.MustUse)) return true;
             if (!CombatElapsedLessGCD(5) && ChainSaw.CanUse(out act, CanUseOption.MustUse)) return true;
+
+           
 
             //Aoe
             if (ChainSaw.CanUse(out act)) return true;
