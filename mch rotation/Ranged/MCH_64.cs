@@ -1,4 +1,5 @@
-﻿using RotationSolver.Basic.Data;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
+using RotationSolver.Basic.Data;
 using static FFXIVClientStructs.FFXIV.Client.UI.Misc.ConfigModule;
 
 namespace BoltsRotations.Ranged
@@ -64,8 +65,13 @@ namespace BoltsRotations.Ranged
             
             if (IsTargetDying)
             {
+                
+                if (Player.HasStatus(false, StatusID.Reassemble))
+                {
+                    if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+                }
+
                 if (GaussRound.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
-                if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
                 if (Ricochet.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
                 if (AirAnchor.CanUse(out act)) return true;
                 if (ChainSaw.CanUse(out act)) return true;
@@ -97,7 +103,7 @@ namespace BoltsRotations.Ranged
                 if (RookAutoturret.CanUse(out act)) return true;
             }
 
-            if (InBurst)
+            if (InBurst && IsTargetBoss)
             {
                 if (Heat >= 50 && !AirAnchor.WillHaveOneCharge(2) && !CombatElapsedLess(10)
                     && Wildfire.CanUse(out act, CanUseOption.MustUse)) return true;
