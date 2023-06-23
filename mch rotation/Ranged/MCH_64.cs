@@ -31,10 +31,10 @@ namespace BoltsRotations.Ranged
         //GCD actions here.
         protected override bool EmergencyGCD(out IAction act)
         {
+
             //Overheated
             if (AutoCrossbow.CanUse(out act)) return true;
             if (HeatBlast.CanUse(out act)) return true;
-
 
             if (BioBlaster.CanUse(out act)) return true;
 
@@ -80,13 +80,13 @@ namespace BoltsRotations.Ranged
             }
 
             // Queen during opener - 50 battery
-            if (IsLastGCD(true, ChainSaw) && CombatElapsedLessGCD(8))
+            if (Battery >= 50 && CombatElapsedLessGCD(18))
             {
                 if (RookAutoturret.CanUse(out act)) return true;
             }
 
-            // The first one minute Queen
-            if (CombatElapsedLess(61) && Battery >= 50)
+            // The second Queen at one minute 
+            if (CombatElapsedLess(61) && !CombatElapsedLess(31) && Battery >= 50)
             {
                 if (RookAutoturret.CanUse(out act)) return true;
             }
@@ -103,20 +103,20 @@ namespace BoltsRotations.Ranged
                 if (RookAutoturret.CanUse(out act)) return true;
             }
 
-            if (InBurst && IsTargetBoss)
-            {
-                if (Heat >= 50 && !AirAnchor.WillHaveOneCharge(2) && !CombatElapsedLess(10)
-                    && Wildfire.CanUse(out act, CanUseOption.MustUse)) return true;
-            }
-
             if (nextGCD.IsTheSameTo(true, AirAnchor))
             {
                 if (Reassemble.CanUse(out act, CanUseOption.MustUse)) return true;
             }
-            
+
             if (nextGCD.IsTheSameTo(true, ChainSaw))
             {
                 if (Reassemble.CanUse(out act, CanUseOption.EmptyOrSkipCombo)) return true;
+            }
+
+            if (InBurst && IsTargetBoss)
+            {
+                if (Heat >= 50 && !CombatElapsedLess(10)
+                    && Wildfire.CanUse(out act, CanUseOption.MustUse)) return true;
             }
 
             if (IsLastGCD(true, Drill) && CombatElapsedLess(10))
@@ -129,7 +129,7 @@ namespace BoltsRotations.Ranged
                 if (BarrelStabilizer.CanUse(out act)) return true;
             }
 
-            if ((Player.HasStatus(true, StatusID.Wildfire) || (Heat >= 50 && !Wildfire.ElapsedAfter(90) && Wildfire.IsInCooldown)) && !ChainSaw.WillHaveOneCharge(8) && !Drill.WillHaveOneCharge(2) && !AirAnchor.WillHaveOneCharge(8))
+            if (CanUseHypercharge(out act))
             {
                 if (Hypercharge.CanUse(out act)) return true;
             }
@@ -150,6 +150,28 @@ namespace BoltsRotations.Ranged
             if (Ricochet.CanUse(out act, CanUseOption.MustUseEmpty)) return true;
             if (GaussRound.CanUse(out act, CanUseOption.MustUseEmpty)) return true;
             return false;
+        }
+
+        private bool CanUseHypercharge(out IAction act)
+        {
+            act = null; 
+            
+            if (Player.HasStatus(true, StatusID.Reassemble)) return false;
+
+            if (Drill.EnoughLevel && Drill.WillHaveOneChargeGCD(2)) return false;
+            if (AirAnchor.EnoughLevel && AirAnchor.WillHaveOneCharge(8)) return false;
+            if (ChainSaw.EnoughLevel && ChainSaw.WillHaveOneCharge(8)) return false;
+
+
+            if (AutoCrossbow.CanUse(out _))
+            {
+                return true;
+            }
+
+            if (Heat >= 50 && !Wildfire.ElapsedAfter(90) && Wildfire.IsCoolingDown) return true;
+            if (Player.HasStatus(true, StatusID.Wildfire)) return true;
+
+            return Hypercharge.CanUse(out act);
         }
 
         //Some 0gcds that don't need to a hostile target in attack range.

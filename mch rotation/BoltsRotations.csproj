@@ -8,7 +8,7 @@
 	  <DalamudLibPath>$(AppData)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
 	  <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="RotationSolver.Basic" Version="2.10.2" />
   </ItemGroup>
@@ -59,4 +59,6 @@
 	  <Folder Include="Melee\" />
 	  <Folder Include="Tank\" />
 	</ItemGroup>
+	
+	
 </Project>
